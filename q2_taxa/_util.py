@@ -11,13 +11,14 @@ def _get_max_level(taxonomy):
     return taxonomy.apply(lambda x: len(x.split(';'))).max()
 
 
-def _collapse_table(table, taxonomy, level, max_observed_level):
+def _collapse_table(table, taxonomy, level, max_observed_level, 
+                    full_taxonomy):
     table_ids = set(table.ids(axis='observation'))
     taxonomy_ids = set(taxonomy.index)
     missing_ids = table_ids.difference(taxonomy_ids)
     if len(missing_ids) > 0:
-        raise ValueError('Feature IDs found in the table are missing from the '
-                         'taxonomy: {}'.format(missing_ids))
+        raise ValueError(f'Feature IDs found in the table are missing from the '
+                         f'taxonomy: {missing_ids}')
 
     table = table.copy()
 
@@ -27,19 +28,23 @@ def _collapse_table(table, taxonomy, level, max_observed_level):
         if len(tax) < max_observed_level:
             padding = ['__'] * (max_observed_level - len(tax))
             tax.extend(padding)
-        return ';'.join(tax[:level])
+        if full_taxonomy:
+            return ';'.join(tax[:level])
+        else:
+            return tax[level - 1]
 
     return table.collapse(_collapse, axis='observation', norm=False)
 
 
-def _extract_to_level(taxonomy, table):
+def _extract_to_level(taxonomy, table, full_taxonomy):
     # Assemble the taxonomy data
     max_obs_lvl = _get_max_level(taxonomy)
 
     collapsed_tables = []
     # Collapse table at specified level
     for level in range(1, max_obs_lvl + 1):
-        collapsed_table = _collapse_table(table, taxonomy, level, max_obs_lvl)
+        collapsed_table = _collapse_table(table, taxonomy, level, max_obs_lvl,
+                                          full_taxonomy)
         as_df = collapsed_table.transpose().to_dataframe(dense=True)
         collapsed_tables.append(as_df)
 

@@ -76,3 +76,10 @@ class BarplotTests(unittest.TestCase):
             csv_lvl3_fp = os.path.join(output_dir, 'level-3.csv')
             self.assertTrue(os.path.exists(csv_lvl3_fp))
             self.assertTrue('val1' not in open(csv_lvl3_fp).read())
+    
+    def test_barplot_full_taxonomy_false(self):
+        with tempfile.TemporaryDirectory() as output_dir:
+            barplot(output_dir, self.table, self.taxonomy, 
+                    metadata=None, full_taxonomy=False)
+            index_fp = os.path.join(output_dir, 'index.html')
+            self.assertTrue(os.path.exists(index_fp))

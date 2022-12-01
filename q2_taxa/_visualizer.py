@@ -24,7 +24,7 @@ TEMPLATES = pkg_resources.resource_filename('q2_taxa', 'assets')
 
 
 def barplot(output_dir: str, table: biom.Table, taxonomy: pd.Series,
-            metadata: Metadata = None) -> None:
+            metadata: Metadata = None, full_taxonomy: bool = True) -> None:
 
     if metadata is None:
         metadata = Metadata(
@@ -38,7 +38,7 @@ def barplot(output_dir: str, table: biom.Table, taxonomy: pd.Series,
     num_metadata_cols = metadata.column_count
     metadata = metadata.to_dataframe()
     jsonp_files, csv_files = [], []
-    collapsed_tables = _extract_to_level(taxonomy, table)
+    collapsed_tables = _extract_to_level(taxonomy, table, full_taxonomy)
 
     for level, df in enumerate(collapsed_tables, 1):
         # Stash column labels before manipulating dataframe
@@ -50,16 +50,15 @@ def barplot(output_dir: str, table: biom.Table, taxonomy: pd.Series,
         df = df.fillna('')
         all_cols = df.columns.values.tolist()
 
-        jsonp_file = 'level-%d.jsonp' % level
-        csv_file = 'level-%d.csv' % level
-
+        jsonp_file = f'level-{level}.jsonp'
+        csv_file = f'level-{level}.csv' 
         jsonp_files.append(jsonp_file)
         csv_files.append(csv_file)
 
         df.to_csv(os.path.join(output_dir, csv_file), index=False)
 
         with open(os.path.join(output_dir, jsonp_file), 'w') as fh:
-            fh.write('load_data(%d,' % level)
+            fh.write(f'load_data({level},')
             json.dump(taxa_cols, fh)
             fh.write(',')
             json.dump(all_cols, fh)

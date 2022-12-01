@@ -16,18 +16,19 @@ from ._util import _collapse_table, _get_max_level
 def collapse(table: biom.Table, taxonomy: pd.Series,
              level: int) -> biom.Table:
     if level < 1:
-        raise ValueError('Requested level of %d is too low. Must be greater '
-                         'than or equal to 1.' % level)
+        raise ValueError(f'Requested level of {level} is too low. '
+                         'Must be greater than or equal to 1.')
 
     # Assemble the taxonomy data
     max_observed_level = _get_max_level(taxonomy)
 
     if level > max_observed_level:
-        raise ValueError('Requested level of %d is larger than the maximum '
-                         'level available in taxonomy data (%d).' %
-                         (level, max_observed_level))
+        raise ValueError(f'Requested level of {level} is larger than the maximum '
+                         'level available in taxonomy data'
+                         f'({max_observed_level}).')
 
-    return _collapse_table(table, taxonomy, level, max_observed_level)
+    return _collapse_table(table, taxonomy, level, max_observed_level,
+                           full_taxonomy=True)
 
 
 def _ids_to_keep_from_taxonomy(feature_ids, taxonomy, include, exclude,
@@ -37,9 +38,10 @@ def _ids_to_keep_from_taxonomy(feature_ids, taxonomy, include, exclude,
 
     ids_without_taxonomy = set(feature_ids) - set(taxonomy.ids)
     if len(ids_without_taxonomy) > 0:
-        raise ValueError("All features ids must be present in taxonomy, but "
-                         "the following feature ids are not: %s"
-                         % ', '.join(ids_without_taxonomy))
+        ids_without_taxonomy_str = ', '.join(ids_without_taxonomy)
+        raise ValueError("All features ids must be present in taxonomy, but the "
+                         "following feature ids are not: "
+                         f"{ids_without_taxonomy_str}")
 
     # Remove feature ids from taxonomy that are not present in
     # feature_ids (this simplifies the actual filtering step downstream) by
@@ -55,7 +57,7 @@ def _ids_to_keep_from_taxonomy(feature_ids, taxonomy, include, exclude,
             exclude = exclude.replace('_', '\\_')
         query_template = "Taxon LIKE '%%%s%%' ESCAPE '\\'"
     else:
-        raise ValueError('Unknown mode: %s' % mode)
+        raise ValueError(f'Unknown mode: {mode}')
 
     # First identify the features that are included (if no includes are
     # provided, include all features).
@@ -85,7 +87,7 @@ def _ids_to_keep_from_taxonomy(feature_ids, taxonomy, include, exclude,
 def filter_table(table: pd.DataFrame, taxonomy: qiime2.Metadata,
                  include: str = None, exclude: str = None,
                  query_delimiter: str = ',', mode: str = 'contains') \
-                 -> pd.DataFrame:
+        -> pd.DataFrame:
     ids_to_keep = _ids_to_keep_from_taxonomy(
         table.columns, taxonomy, include, exclude, query_delimiter,
         mode)
@@ -109,7 +111,7 @@ def filter_table(table: pd.DataFrame, taxonomy: qiime2.Metadata,
 def filter_seqs(sequences: pd.Series, taxonomy: qiime2.Metadata,
                 include: str = None, exclude: str = None,
                 query_delimiter: str = ',', mode: str = 'contains') \
-                -> pd.Series:
+        -> pd.Series:
     ids_to_keep = _ids_to_keep_from_taxonomy(
         sequences.index, taxonomy, include, exclude, query_delimiter,
         mode)

@@ -6,19 +6,18 @@
 # The full license is in the file LICENSE, distributed with this software.
 # ----------------------------------------------------------------------------
 
-import qiime2.plugin
-
-import q2_taxa
+from qiime2.plugin import (Str, Int, Bool, Choices,
+                           Metadata, Plugin)
 
 from q2_types.feature_data import FeatureData, Taxonomy, Sequence
 from q2_types.feature_table import FeatureTable, Frequency
 
-
+import q2_taxa
 from . import barplot, collapse, filter_table, filter_seqs
 import q2_taxa._examples as ex
 
 
-plugin = qiime2.plugin.Plugin(
+plugin = Plugin(
     name='taxa',
     version=q2_taxa.__version__,
     website='https://github.com/qiime2/q2-taxa',
@@ -36,7 +35,7 @@ plugin.methods.register_function(
         'taxonomy': FeatureData[Taxonomy],
         'table': FeatureTable[Frequency]
     },
-    parameters={'level': qiime2.plugin.Int},
+    parameters={'level': Int},
     outputs=[('collapsed_table', FeatureTable[Frequency])],
     input_descriptions={
         'taxonomy': ('Taxonomic annotations for features in the provided '
@@ -46,9 +45,9 @@ plugin.methods.register_function(
                      'will be ignored.'),
         'table': 'Feature table to be collapsed.'},
     parameter_descriptions={
-        'level': ('The taxonomic level at which the features should be '
-                  'collapsed. All ouput features will have exactly '
-                  'this many levels of taxonomic annotation.')
+        'level':         ('The taxonomic level at which the features should be '
+                          'collapsed. All ouput features will have exactly '
+                          'this many levels of taxonomic annotation.')
     },
     output_descriptions={
         'collapsed_table': ('The resulting feature table, where all features '
@@ -70,12 +69,10 @@ plugin.methods.register_function(
         'taxonomy': FeatureData[Taxonomy],
         'table': FeatureTable[Frequency]
     },
-    parameters={'include': qiime2.plugin.Str,
-                'exclude': qiime2.plugin.Str,
-                'mode':
-                    qiime2.plugin.Str % qiime2.plugin.Choices(
-                        ['exact', 'contains']),
-                'query_delimiter': qiime2.plugin.Str},
+    parameters={'include': Str,
+                'exclude': Str,
+                'mode': Str % Choices(['exact', 'contains']),
+                'query_delimiter': Str},
     outputs=[('filtered_table', FeatureTable[Frequency])],
     input_descriptions={
         'taxonomy': ('Taxonomic annotations for features in the provided '
@@ -127,12 +124,11 @@ plugin.methods.register_function(
         'taxonomy': FeatureData[Taxonomy],
         'sequences': FeatureData[Sequence]
     },
-    parameters={'include': qiime2.plugin.Str,
-                'exclude': qiime2.plugin.Str,
+    parameters={'include': Str,
+                'exclude': Str,
                 'mode':
-                    qiime2.plugin.Str % qiime2.plugin.Choices(
-                        ['exact', 'contains']),
-                'query_delimiter': qiime2.plugin.Str},
+                    Str % Choices(['exact', 'contains']),
+                'query_delimiter': Str},
     outputs=[('filtered_sequences', FeatureData[Sequence])],
     input_descriptions={
         'taxonomy': ('Taxonomic annotations for features in the provided '
@@ -182,7 +178,8 @@ plugin.visualizers.register_function(
         'taxonomy': FeatureData[Taxonomy],
         'table': FeatureTable[Frequency]
     },
-    parameters={'metadata': qiime2.plugin.Metadata},
+    parameters={'metadata': Metadata,
+                'full_taxonomy': Bool},
     input_descriptions={
         'taxonomy': ('Taxonomic annotations for features in the provided '
                      'feature table. All features in the feature table must '
@@ -190,7 +187,13 @@ plugin.visualizers.register_function(
                      'annotations that are not present in the feature table '
                      'will be ignored.'),
         'table': 'Feature table to visualize at various taxonomic levels.'},
-    parameter_descriptions={'metadata': 'The sample metadata.'},
+    parameter_descriptions={'metadata': 'The sample metadata.',
+                            'full_taxonomy' : 'If True, displays the full' 
+                                              'taxonomy for each feature'
+                                              'up until desired level. '
+                                              'If False, displays only the'
+                                              'taxonomic annotation at the'
+                                              'desired level.'},
     name='Visualize taxonomy with an interactive bar plot',
     description='This visualizer produces an interactive barplot visualization'
                 ' of taxonomies. Interactive features include multi-level '

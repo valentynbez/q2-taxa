@@ -131,9 +131,9 @@ class FilterTable(unittest.TestCase):
                              index=['A', 'B', 'C', 'D'],
                              columns=['feat1', 'feat2'])
         taxonomy = qiime2.Metadata(
-                pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
-                             index=pd.Index(['feat1', 'feat2'], name='id'),
-                             columns=['Taxon']))
+            pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
+                         index=pd.Index(['feat1', 'feat2'], name='id'),
+                         columns=['Taxon']))
 
         with self.assertRaisesRegex(ValueError, 'At least one'):
             filter_table(table, taxonomy)
@@ -143,9 +143,9 @@ class FilterTable(unittest.TestCase):
                              index=['A', 'B', 'C', 'D'],
                              columns=['feat1', 'feat2'])
         taxonomy = qiime2.Metadata(
-                pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
-                             index=pd.Index(['feat1', 'feat2'], name='id'),
-                             columns=['Taxon']))
+            pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
+                         index=pd.Index(['feat1', 'feat2'], name='id'),
+                         columns=['Taxon']))
 
         # include with delimiter
         obs = filter_table(table, taxonomy, include='cc@peanut@ee',
@@ -165,9 +165,9 @@ class FilterTable(unittest.TestCase):
                              index=['A', 'B', 'C', 'D'],
                              columns=['feat1', 'feat2'])
         taxonomy = qiime2.Metadata(
-                pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
-                             index=pd.Index(['feat1', 'feat2'], name='id'),
-                             columns=['Taxon']))
+            pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
+                         index=pd.Index(['feat1', 'feat2'], name='id'),
+                         columns=['Taxon']))
 
         with self.assertRaisesRegex(ValueError, 'Unknown mode'):
             filter_table(table, taxonomy, include='bb', mode='not-a-mode')
@@ -177,9 +177,9 @@ class FilterTable(unittest.TestCase):
                              index=['A', 'B', 'C', 'D'],
                              columns=['feat1', 'feat2'])
         taxonomy = qiime2.Metadata(
-                pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
-                             index=pd.Index(['feat1', 'feat2'], name='id'),
-                             columns=['Taxon']))
+            pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
+                         index=pd.Index(['feat1', 'feat2'], name='id'),
+                         columns=['Taxon']))
 
         # keep both features
         obs = filter_table(table, taxonomy, include='bb')
@@ -235,9 +235,9 @@ class FilterTable(unittest.TestCase):
                              index=['A', 'B', 'C', 'D'],
                              columns=['feat1', 'feat2'])
         taxonomy = qiime2.Metadata(
-                pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
-                             index=pd.Index(['feat1', 'feat2'], name='id'),
-                             columns=['Taxon']))
+            pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
+                         index=pd.Index(['feat1', 'feat2'], name='id'),
+                         columns=['Taxon']))
 
         # keep both features
         obs = filter_table(table, taxonomy, include='aa; bb; cc,aa; bb; dd ee',
@@ -269,9 +269,9 @@ class FilterTable(unittest.TestCase):
                              index=['A', 'B', 'C', 'D'],
                              columns=['feat1', 'feat2'])
         taxonomy = qiime2.Metadata(
-                pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
-                             index=pd.Index(['feat1', 'feat2'], name='id'),
-                             columns=['Taxon']))
+            pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
+                         index=pd.Index(['feat1', 'feat2'], name='id'),
+                         columns=['Taxon']))
 
         # keep both features
         obs = filter_table(table, taxonomy, exclude='ab')
@@ -324,9 +324,9 @@ class FilterTable(unittest.TestCase):
                              index=['A', 'B', 'C', 'D'],
                              columns=['feat1', 'feat2'])
         taxonomy = qiime2.Metadata(
-                pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
-                             index=pd.Index(['feat1', 'feat2'], name='id'),
-                             columns=['Taxon']))
+            pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
+                         index=pd.Index(['feat1', 'feat2'], name='id'),
+                         columns=['Taxon']))
 
         # keep both features
         obs = filter_table(table, taxonomy, exclude='peanut!',
@@ -374,9 +374,9 @@ class FilterTable(unittest.TestCase):
                              index=['A', 'B', 'C', 'D'],
                              columns=['feat1', 'feat2'])
         taxonomy = qiime2.Metadata(
-                pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
-                             index=pd.Index(['feat1', 'feat2'], name='id'),
-                             columns=['Taxon']))
+            pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
+                         index=pd.Index(['feat1', 'feat2'], name='id'),
+                         columns=['Taxon']))
 
         # keep both features
         obs = filter_table(table, taxonomy, include='aa', exclude='peanut!')
@@ -436,9 +436,9 @@ class FilterTable(unittest.TestCase):
                              index=['A', 'B', 'C', 'D'],
                              columns=['feat1', 'feat2'])
         taxonomy = qiime2.Metadata(
-                pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
-                             index=pd.Index(['feat1', 'feat2'], name='id'),
-                             columns=['Taxon']))
+            pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
+                         index=pd.Index(['feat1', 'feat2'], name='id'),
+                         columns=['Taxon']))
 
         # keep feat1 only - underscore not treated as a wild card
         obs = filter_table(table, taxonomy, include='cc,d_')
@@ -450,9 +450,9 @@ class FilterTable(unittest.TestCase):
         # keep feat1 only - underscore in query matches underscore in
         # taxonomy annotation
         taxonomy = qiime2.Metadata(
-                pd.DataFrame(['aa; bb; c_', 'aa; bb; dd ee'],
-                             index=pd.Index(['feat1', 'feat2'], name='id'),
-                             columns=['Taxon']))
+            pd.DataFrame(['aa; bb; c_', 'aa; bb; dd ee'],
+                         index=pd.Index(['feat1', 'feat2'], name='id'),
+                         columns=['Taxon']))
         obs = filter_table(table, taxonomy, include='c_')
         exp = pd.DataFrame([[2.0], [1.0], [9.0]],
                            index=['A', 'B', 'C'],
@@ -464,9 +464,9 @@ class FilterTable(unittest.TestCase):
                              index=['A', 'B', 'C', 'D'],
                              columns=['feat1', 'feat2'])
         taxonomy = qiime2.Metadata(
-                pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
-                             index=pd.Index(['feat1', 'feat2'], name='id'),
-                             columns=['Taxon']))
+            pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
+                         index=pd.Index(['feat1', 'feat2'], name='id'),
+                         columns=['Taxon']))
 
         # empty - feat2, which is matched by the include term, has a frequency
         # of zero in all samples, so all samples end up dropped from the table
@@ -479,10 +479,10 @@ class FilterTable(unittest.TestCase):
                              index=['A', 'B', 'C', 'D'],
                              columns=['feat1', 'feat2'])
         taxonomy = qiime2.Metadata(
-                pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee', 'aa; bb; cc'],
-                             index=pd.Index(['feat1', 'feat2', 'feat3'],
-                                            name='id'),
-                             columns=['Taxon']))
+            pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee', 'aa; bb; cc'],
+                         index=pd.Index(['feat1', 'feat2', 'feat3'],
+                                        name='id'),
+                         columns=['Taxon']))
 
         # keep both features
         obs = filter_table(table, taxonomy, include='bb')
@@ -493,9 +493,9 @@ class FilterTable(unittest.TestCase):
                              index=['A', 'B', 'C', 'D'],
                              columns=['feat1', 'feat2'])
         taxonomy = qiime2.Metadata(
-                pd.DataFrame(['aa; bb; cc'],
-                             index=pd.Index(['feat1'], name='id'),
-                             columns=['Taxon']))
+            pd.DataFrame(['aa; bb; cc'],
+                         index=pd.Index(['feat1'], name='id'),
+                         columns=['Taxon']))
 
         with self.assertRaisesRegex(ValueError, expected_regex='All.*feat2'):
             filter_table(table, taxonomy, include='bb')
@@ -506,9 +506,9 @@ class FilterSeqs(unittest.TestCase):
     def test_filter_no_filters(self):
         seqs = pd.Series(['ACGT', 'ACCC'], index=['feat1', 'feat2'])
         taxonomy = qiime2.Metadata(
-                pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
-                             index=pd.Index(['feat1', 'feat2'], name='id'),
-                             columns=['Taxon']))
+            pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
+                         index=pd.Index(['feat1', 'feat2'], name='id'),
+                         columns=['Taxon']))
 
         with self.assertRaisesRegex(ValueError, 'At least one'):
             filter_seqs(seqs, taxonomy)
@@ -516,9 +516,9 @@ class FilterSeqs(unittest.TestCase):
     def test_alt_delimiter(self):
         seqs = pd.Series(['ACGT', 'ACCC'], index=['feat1', 'feat2'])
         taxonomy = qiime2.Metadata(
-                pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
-                             index=pd.Index(['feat1', 'feat2'], name='id'),
-                             columns=['Taxon']))
+            pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
+                         index=pd.Index(['feat1', 'feat2'], name='id'),
+                         columns=['Taxon']))
 
         # include with delimiter
         obs = filter_seqs(seqs, taxonomy, include='cc@peanut@ee',
@@ -539,9 +539,9 @@ class FilterSeqs(unittest.TestCase):
     def test_filter_seqs_unknown_mode(self):
         seqs = pd.Series(['ACGT', 'ACCC'], index=['feat1', 'feat2'])
         taxonomy = qiime2.Metadata(
-                pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
-                             index=pd.Index(['feat1', 'feat2'], name='id'),
-                             columns=['Taxon']))
+            pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
+                         index=pd.Index(['feat1', 'feat2'], name='id'),
+                         columns=['Taxon']))
 
         with self.assertRaisesRegex(ValueError, 'Unknown mode'):
             filter_seqs(seqs, taxonomy, include='bb', mode='not-a-mode')
@@ -549,9 +549,9 @@ class FilterSeqs(unittest.TestCase):
     def test_filter_seqs_include(self):
         seqs = pd.Series(['ACGT', 'ACCC'], index=['feat1', 'feat2'])
         taxonomy = qiime2.Metadata(
-                pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
-                             index=pd.Index(['feat1', 'feat2'], name='id'),
-                             columns=['Taxon']))
+            pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
+                         index=pd.Index(['feat1', 'feat2'], name='id'),
+                         columns=['Taxon']))
 
         # keep both features
         obs = filter_seqs(seqs, taxonomy, include='bb')
@@ -612,9 +612,9 @@ class FilterSeqs(unittest.TestCase):
     def test_filter_seqs_include_exact_match(self):
         seqs = pd.Series(['ACGT', 'ACCC'], index=['feat1', 'feat2'])
         taxonomy = qiime2.Metadata(
-                pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
-                             index=pd.Index(['feat1', 'feat2'], name='id'),
-                             columns=['Taxon']))
+            pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
+                         index=pd.Index(['feat1', 'feat2'], name='id'),
+                         columns=['Taxon']))
 
         # keep both features
         obs = filter_seqs(seqs, taxonomy, include='aa; bb; cc,aa; bb; dd ee',
@@ -648,9 +648,9 @@ class FilterSeqs(unittest.TestCase):
     def test_filter_seqs_exclude(self):
         seqs = pd.Series(['ACGT', 'ACCC'], index=['feat1', 'feat2'])
         taxonomy = qiime2.Metadata(
-                pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
-                             index=pd.Index(['feat1', 'feat2'], name='id'),
-                             columns=['Taxon']))
+            pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
+                         index=pd.Index(['feat1', 'feat2'], name='id'),
+                         columns=['Taxon']))
 
         # keep both features
         obs = filter_seqs(seqs, taxonomy, exclude='ab')
@@ -709,9 +709,9 @@ class FilterSeqs(unittest.TestCase):
     def test_filter_seqs_exclude_exact_match(self):
         seqs = pd.Series(['ACGT', 'ACCC'], index=['feat1', 'feat2'])
         taxonomy = qiime2.Metadata(
-                pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
-                             index=pd.Index(['feat1', 'feat2'], name='id'),
-                             columns=['Taxon']))
+            pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
+                         index=pd.Index(['feat1', 'feat2'], name='id'),
+                         columns=['Taxon']))
 
         # keep both features
         obs = filter_seqs(seqs, taxonomy, exclude='peanut!',
@@ -761,9 +761,9 @@ class FilterSeqs(unittest.TestCase):
     def test_filter_seqs_include_exclude(self):
         seqs = pd.Series(['ACGT', 'ACCC'], index=['feat1', 'feat2'])
         taxonomy = qiime2.Metadata(
-                pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
-                             index=pd.Index(['feat1', 'feat2'], name='id'),
-                             columns=['Taxon']))
+            pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
+                         index=pd.Index(['feat1', 'feat2'], name='id'),
+                         columns=['Taxon']))
 
         # keep both features
         obs = filter_seqs(seqs, taxonomy, include='aa', exclude='peanut!')
@@ -827,9 +827,9 @@ class FilterSeqs(unittest.TestCase):
     def test_filter_seqs_underscores_escaped(self):
         seqs = pd.Series(['ACGT', 'ACCC'], index=['feat1', 'feat2'])
         taxonomy = qiime2.Metadata(
-                pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
-                             index=pd.Index(['feat1', 'feat2'], name='id'),
-                             columns=['Taxon']))
+            pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee'],
+                         index=pd.Index(['feat1', 'feat2'], name='id'),
+                         columns=['Taxon']))
 
         # keep feat1 only - underscore not treated as a wild card
         obs = filter_seqs(seqs, taxonomy, include='cc,d_')
@@ -841,9 +841,9 @@ class FilterSeqs(unittest.TestCase):
         # keep feat1 only - underscore in query matches underscore in
         # taxonomy annotation
         taxonomy = qiime2.Metadata(
-                pd.DataFrame(['aa; bb; c_', 'aa; bb; dd ee'],
-                             index=pd.Index(['feat1', 'feat2'], name='id'),
-                             columns=['Taxon']))
+            pd.DataFrame(['aa; bb; c_', 'aa; bb; dd ee'],
+                         index=pd.Index(['feat1', 'feat2'], name='id'),
+                         columns=['Taxon']))
         obs = filter_seqs(seqs, taxonomy, include='c_')
         exp = pd.Series(['ACGT'], index=['feat1'])
         obs.sort_values(inplace=True)
@@ -853,10 +853,10 @@ class FilterSeqs(unittest.TestCase):
     def test_extra_taxon_ignored(self):
         seqs = pd.Series(['ACGT', 'ACCC'], index=['feat1', 'feat2'])
         taxonomy = qiime2.Metadata(
-                pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee', 'aa; bb; cc'],
-                             index=pd.Index(['feat1', 'feat2', 'feat3'],
-                                            name='id'),
-                             columns=['Taxon']))
+            pd.DataFrame(['aa; bb; cc', 'aa; bb; dd ee', 'aa; bb; cc'],
+                         index=pd.Index(['feat1', 'feat2', 'feat3'],
+                                        name='id'),
+                         columns=['Taxon']))
 
         # keep both features
         obs = filter_seqs(seqs, taxonomy, include='bb')
@@ -868,9 +868,9 @@ class FilterSeqs(unittest.TestCase):
     def test_missing_taxon_errors(self):
         seqs = pd.Series(['ACGT', 'ACCC'], index=['feat1', 'feat2'])
         taxonomy = qiime2.Metadata(
-                pd.DataFrame(['aa; bb; cc'],
-                             index=pd.Index(['feat1'], name='id'),
-                             columns=['Taxon']))
+            pd.DataFrame(['aa; bb; cc'],
+                         index=pd.Index(['feat1'], name='id'),
+                         columns=['Taxon']))
 
         with self.assertRaisesRegex(ValueError, expected_regex='All.*feat2'):
             filter_seqs(seqs, taxonomy, include='bb')
